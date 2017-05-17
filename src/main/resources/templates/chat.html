@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>聊天</title>
+<script type="text/javascript" th:src="@{sockjs.js}"></script>
+<script type="text/javascript" th:src="@{stomp.min.js}"></script>
+<script type="text/javascript" th:src="@{jquery-3.2.1.min/js}"></script>
+</head>
+<body>
+	<p>聊天室</p>
+	<form id="wsxForm">
+		<textarea rows="4" cols="60" name="text"></textarea>
+		<input type="submit" />
+	</form>
+	<script th:inline="javascript">
+		$("#wsxForm").submit(function(e){
+			e.preventDefault();
+			var text = $("#wsxForm").find('textarea[name="text"]').val();
+			sendSpittle(text);
+		});
+		var sock = new SockJS("/endpointWsx");//连接/endpointWsx的节点
+		var stomp = Stomp.over(sock);
+		stomp.connect('guest','guest',function(frame){
+			stomp.subscribe("/user/queue/notify",handleNotification);
+		});
+		
+		function.handleNotification(message){
+			$("#output").append("<b>Received: "+message.body +"</b><br/>");
+		}
+		function sendSpittle(text){
+			stomp.send("/chat",{},text);
+		}
+		$("#stop").click(function(){sock.close()});
+	</script>
+	<div id="output">
+	</div>
+	
+</body>
+</html>
