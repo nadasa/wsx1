@@ -20,6 +20,7 @@ import com.example.springboot.domain.Person;
 @Controller
 @SpringBootApplication
 public class Wsx1Application {
+	
 	@RequestMapping("/index")
 	public String index(Model model){
 		Person person = new Person("aa",1);

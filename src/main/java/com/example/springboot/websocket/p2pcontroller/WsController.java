@@ -13,9 +13,10 @@ public class WsController {
 	private SimpMessagingTemplate messagingTemplate;
 	@MessageMapping("/chat")
 	public void handleChat(Principal principal,String msg){
-		if("wsx".equals(principal.getName())){
+		System.out.println(msg);
+		if("wsx".equals(principal.getName())){System.out.println("wsx");
 			messagingTemplate.convertAndSendToUser("zb", "/queue/notify","wsx send to zb"+ msg);
-		}else{
+		}else{System.out.println("zb");
 			messagingTemplate.convertAndSendToUser("wsx", "/queue/notify","zb send to wsx"+ msg);
 		}
 	}

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8"></meta>
 <title>聊天</title>
 <script type="text/javascript" th:src="@{sockjs.js}"></script>
 <script type="text/javascript" th:src="@{stomp.min.js}"></script>
-<script type="text/javascript" th:src="@{jquery-3.2.1.min/js}"></script>
+<script type="text/javascript" th:src="@{jquery-3.2.1.min.js}"></script>
 </head>
 <body>
 	<p>聊天室</p>
@@ -14,21 +14,21 @@
 		<input type="submit" />
 	</form>
 	<script th:inline="javascript">
-		$("#wsxForm").submit(function(e){
+		$("#wsxForm").submit(function(e){alert(1);
 			e.preventDefault();
-			var text = $("#wsxForm").find('textarea[name="text"]').val();
+			var text = $("#wsxForm").find('textarea[name="text"]').val();alert("text"+text);
 			sendSpittle(text);
 		});
 		var sock = new SockJS("/endpointWsx");//连接/endpointWsx的节点
 		var stomp = Stomp.over(sock);
 		stomp.connect('guest','guest',function(frame){
-			stomp.subscribe("/user/queue/notify",handleNotification);
+			stomp.subscribe("/user/queue/notify",handleNotification);alert(123);
 		});
 		
-		function.handleNotification(message){
+		function handleNotification(message){alert("222"+message);
 			$("#output").append("<b>Received: "+message.body +"</b><br/>");
 		}
-		function sendSpittle(text){
+		function sendSpittle(text){alert("text1"+text);
 			stomp.send("/chat",{},text);
 		}
 		$("#stop").click(function(){sock.close()});
